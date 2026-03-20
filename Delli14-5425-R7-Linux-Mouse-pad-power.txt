@@ -1,0 +1,13 @@
+cat /proc/bus/input/devices | grep -iE 'touchpad|synaptics|alps|elan'
+cat /proc/bus/input/devices | grep -iE 'touchpad|pad' -A 10
+cat /sys/bus/i2c/devices/i2c-DLL0B46:01/power/control
+echo "on" | sudo tee /sys/bus/i2c/devices/i2c-DLL0B46:01/power/control
+cat /sys/bus/i2c/devices/i2c-DLL0B46:01/power/control
+
+sudo nano /etc/udev/rules.d/99-touchpad-power.rules
+
+ACTION=="add", SUBSYSTEM=="i2c", ATTR{name}=="DLL0B46:01 27C6:0D45 Touchpad", ATTR{power/control}="on"
+
+
+sudo udevadm control --reload-rules && sudo udevadm trigger
+cat /sys/bus/i2c/devices/i2c-DLL0B46:01/power/control
