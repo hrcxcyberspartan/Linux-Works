@@ -53,7 +53,7 @@ Add user to sudoers
 -------------------------
 * Install essential Packages for kali 
 
-Packages : apt install kali-linux-default kali-desktop-xfce kali-tools-top10 ip-utils git wget curl axel sed original-awk tmux htop fastfetch cmatrix pipes-sh dirb dirbuster gobuster seclists zaproxy xrdp ssh
+Packages : apt install kali-linux-default kali-desktop-xfce kali-tools-top10 iputils-ping net-tools net git wget curl axel sed original-awk tmux htop fastfetch cmatrix pipes-sh dirb dirbuster gobuster seclists zaproxy xrdp ssh
 
 -------------------------
 Exit and stop the container 
