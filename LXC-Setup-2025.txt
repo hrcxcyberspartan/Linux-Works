@@ -74,6 +74,13 @@ lxc.mount.entry = /home/host-user/.Xauthority /home/container-user/.Xauthority n
 lxc.mount.entry = /home/host-user/.Xauthority /root/.Xauthority none bind,optional,create=file 0 0
 
 -------------------------
+Accessing GUI apps and fix font graphical issue
+export _JAVA_OPTIONS='-Dsun.java2d.xrender=false -Dawt.useSystemAAFontSettings=lcd -Dswing.aatext=true'
+export DISPLAY=:0
+export WAYLAND_DISPLAY=wayland-0
+-------------------------
+
+-------------------------
 The END
 -------------------------
 
