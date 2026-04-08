@@ -1,5 +1,5 @@
 LXC - Container Setup - PRIVILEGED Container ( Kali - Linux 2026 )
-
+Note : Some changes made using claude AI - Not tested
 ----------ReadMe----------
 * Use it at your own risk 
 * Not all tools are tested - they might not work properly
