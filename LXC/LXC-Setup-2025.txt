@@ -1,0 +1,101 @@
+LXC - Container Setup - PRIVILEGED Container ( Kali - Linux 2026 )
+
+----------ReadMe----------
+* Use it at your own risk 
+* Not all tools are tested - they might not work properly
+* Educational and Development Purpose only
+* All Commands are safe to use [ if you are not sure - verify by google check / Ask AI / ask Stack Overflow / Trust me Bro ]
+* If you are not sure - try setting up with a virtual Machine
+* Works with x11 and wayland
+--------------------------
+
+INSTALLING LXC KALI-LINUX CONTAINER
+
+* Create a LXC Container 
+sudo lxc-create -n Kali-Linux -t download 
+* select the OS, version & architecture
+kali – current – amd64
+
+--------------------------
+
+BASIC LXC COMMANDS
+
+* Start: sudo lxc-start -n Kali-Linux
+* Attach: sudo lxc-attach -n Kali-Linux
+* Stop: sudo lxc-stop -n Kali-Linux
+* List: sudo lxc-ls -f
+* Info: sudo lxc-info -n Kali-Linux
+* Remove: sudo lxc-destroy -n Kali-Linux
+
+--------------------------
+
+Note : Install all the tools via kali-rolling ( Kali-last-snapshot is recommended )
+
+--------------------------
+
+Paste it in  /var/lib/lxc/container-name)/config
+
+# lxc.net.0.type = empty
+# lxc.net.0.type = none
+
+-------------------------
+
+Attach inside the container 
+
+* update - apt update
+* Install essential - apt install bash-completion sudo
+Adduser
+- adduser username ( and setup password )
+
+Add user to sudoers
+- usermod -aG sudo username
+
+-------------------------
+* Install essential Packages for kali 
+
+Packages : apt install kali-linux-default kali-desktop-xfce kali-tools-top10 iputils-ping net-tools net git wget curl axel sed original-awk tmux htop fastfetch cmatrix pipes-sh dirb dirbuster gobuster seclists zaproxy xrdp ssh xsel wl-clipboard
+
+-------------------------
+Exit and stop the container 
+-------------------------
+
+Now inside your container conf ( /var/lib/lxc/container-name/config )
+paste the following - This is meant for privilege container
+
+Note : I have a user inside the container ( user id - uid = 1000 (host user ID) 
+
+# Seamless GUI access as user  - lxc mounts
+lxc.mount.entry = /tmp/.X11-unix tmp/.X11-unix none bind,optional,create=dir 0 0
+lxc.mount.entry = /run/user/1000 run/user/1000 none bind,optional,create=dir 0 0   # for user inside container
+lxc.mount.entry = /run/user/1000 run/user/0 none bind,optional,create=dir 0 0      # for root
+lxc.mount.entry = /dev/dri dev/dri none bind,optional,create=dir 0 0               # GPU
+# Xauthority for authentication (critical for Java/Burp on Wayland)
+lxc.mount.entry = /home/host-user/.Xauthority /home/container-user/.Xauthority none bind,optional,create=file 0 0
+lxc.mount.entry = /home/host-user/.Xauthority /root/.Xauthority none bind,optional,create=file 0 0
+
+-------------------------
+# Accessing GUI apps and fix font graphical issue
+export _JAVA_OPTIONS='-Dsun.java2d.xrender=false -Dawt.useSystemAAFontSettings=lcd -Dswing.aatext=true'
+export DISPLAY=:0
+export WAYLAND_DISPLAY=wayland-0
+-------------------------
+Xauth display - fix with some apps accessing GUI
+xauth list $DISPLAY
+output : unix:  MIT-MAGIC-COOKIE-1  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+** copy to lxc contained
+xauth add unix:  MIT-MAGIC-COOKIE-1  xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
+
+** Check with 
+xauth list
+run commands maybe with "sudo -E"
+-------------------------
+The END
+-------------------------
+
+Note : Some tools may not work properly on x11 or wayland : My suggestion is to enable RDP or VNC and use it that way
+
+
+ 
+ 
+

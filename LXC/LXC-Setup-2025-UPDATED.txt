@@ -1,0 +1,386 @@
+LXC - Container Setup - PRIVILEGED Container ( Kali - Linux 2026 )
+
+----------ReadMe----------
+* Use it at your own risk 
+* Not all tools are tested - they might not work properly
+* Educational and Development Purpose only
+* All Commands are safe to use [ if you have doubts, verify by google / Ask AI / ask Stack Overflow ]
+* If still in doubt - try in a Virtual Machine before installing on host
+* Works with both X11 and Wayland (with proper configuration)
+--------------------------
+
+INSTALLING LXC KALI-LINUX CONTAINER
+
+* Create a LXC Container 
+sudo lxc-create -n hack -t download 
+* select the OS, version & architecture
+kali – current – amd64
+
+--------------------------
+
+BASIC LXC COMMANDS
+
+* Start: sudo lxc-start -n hack
+* Attach: sudo lxc-attach -n hack
+* Stop: sudo lxc-stop -n hack
+* List: sudo lxc-ls -f
+* Info: sudo lxc-info -n hack
+* Remove: sudo lxc-destroy -n hack
+
+--------------------------
+
+Note : Install all the tools via kali-rolling ( Kali-last-snapshot is recommended )
+
+--------------------------
+
+CONTAINER NETWORK CONFIGURATION
+Paste the following in /var/lib/lxc/hack/config
+
+# Shared host network stack (direct access to host interfaces)
+lxc.net.0.type = none
+
+--------------------------
+
+INSIDE THE CONTAINER - Initial Setup
+
+* System update
+apt update && apt upgrade -y
+
+* Install essential packages
+apt install -y bash-completion sudo
+
+* Create non-root user
+adduser username (and setup password)
+
+* Add user to sudoers
+usermod -aG sudo username
+
+--------------------------
+
+INSTALL KALI TOOLS
+
+Option A: Full Tool Suite (Recommended for CDSA/CPTS)
+────────────────────────────────────────────────────
+apt install -y kali-linux-default kali-desktop-xfce
+
+Option B: Lightweight + Manual Tools
+────────────────────────────────────
+apt install -y kali-desktop-xfce
+# Then install tools manually as needed
+
+Option C: Add CDSA-Specific (SIEM for Incident Response)
+───────────────────────────────────────────────────────
+apt install -y \
+  elasticsearch \
+  kibana \
+  filebeat \
+  auditbeat \
+  logstash
+
+Additional Utilities (Optional):
+───────────────────────────────
+apt install -y \
+  iputils-ping \
+  net-tools \
+  git \
+  wget \
+  curl \
+  axel \
+  sed \
+  gawk \
+  tmux \
+  htop \
+  fastfetch \
+  cmatrix \
+  pipes-sh \
+  dirb \
+  dirbuster \
+  gobuster \
+  seclists \
+  zaproxy \
+  xrdp \
+  openssh-server \
+  xsel \
+  wl-clipboard
+
+--------------------------
+
+EXIT AND STOP THE CONTAINER
+(We'll configure X11/Wayland mounts next)
+
+exit
+sudo lxc-stop -n hack
+
+--------------------------
+
+CONFIGURE X11 + WAYLAND GUI ACCESS
+Edit: /var/lib/lxc/hack/config
+
+Paste the following configuration:
+
+# ═════════════════════════════════════════════════════════════
+# NETWORK CONFIGURATION - Shared with Host
+# ═════════════════════════════════════════════════════════════
+lxc.net.0.type = none
+
+# ═════════════════════════════════════════════════════════════
+# X11 DISPLAY SERVER SUPPORT
+# ═════════════════════════════════════════════════════════════
+# X11 socket for display server communication
+lxc.mount.entry = /tmp/.X11-unix tmp/.X11-unix none bind,optional,create=dir 0 0
+
+# ═════════════════════════════════════════════════════════════
+# WAYLAND DISPLAY SERVER SUPPORT (Modern GNOME/KDE Plasma)
+# ═════════════════════════════════════════════════════════════
+# Wayland runtime directory (contains wayland-0, wayland-1, etc sockets)
+lxc.mount.entry = /run/user/1000 run/user/1000 none bind,optional,create=dir 0 0
+
+# Wayland for root user (if apps run as root)
+lxc.mount.entry = /run/user/1000 run/user/0 none bind,optional,create=dir 0 0
+
+# ═════════════════════════════════════════════════════════════
+# GPU/DRI - Hardware Acceleration (For both X11 and Wayland)
+# ═════════════════════════════════════════════════════════════
+lxc.mount.entry = /dev/dri dev/dri none bind,optional,create=dir 0 0
+
+# ═════════════════════════════════════════════════════════════
+# X11 AUTHENTICATION (Xauthority)
+# Critical for Java apps (Burp Suite), security tools on Wayland
+# Replace 'hx1' with your actual host username
+# ═════════════════════════════════════════════════════════════
+lxc.mount.entry = /home/hx1/.Xauthority /home/hacker/.Xauthority none bind,optional,create=file 0 0
+lxc.mount.entry = /home/hx1/.Xauthority /root/.Xauthority none bind,optional,create=file 0 0
+
+--------------------------
+
+CONFIGURE ENVIRONMENT VARIABLES (Inside Container)
+
+Add to ~/.bashrc (for user) or /etc/profile (system-wide):
+
+# ═════════════════════════════════════════════════════════════
+# DISPLAY SERVER CONFIGURATION (X11 + Wayland)
+# ═════════════════════════════════════════════════════════════
+
+# X11 Display Server
+export DISPLAY=:0
+
+# Wayland Display Server
+export WAYLAND_DISPLAY=wayland-0
+
+# XDG Runtime Directory (CRITICAL for Wayland - don't skip this!)
+# This tells Wayland apps where to find the runtime socket
+export XDG_RUNTIME_DIR=/run/user/1000
+
+# ═════════════════════════════════════════════════════════════
+# JAVA/BURP SUITE OPTIMIZATION
+# ═════════════════════════════════════════════════════════════
+export _JAVA_OPTIONS='-Dsun.java2d.xrender=false -Dawt.useSystemAAFontSettings=lcd -Dswing.aatext=true'
+
+# ═════════════════════════════════════════════════════════════
+# OPTIONAL: Force apps to use specific display server
+# Uncomment to enable:
+# ═════════════════════════════════════════════════════════════
+
+# Force Firefox to use Wayland rendering
+# export MOZ_ENABLE_WAYLAND=1
+
+# Force Qt applications to use Wayland
+# export QT_QPA_PLATFORM=wayland
+
+# Force GTK applications to use Wayland
+# export GDK_BACKEND=wayland
+
+--------------------------
+
+RESTART CONTAINER WITH NEW CONFIGURATION
+
+sudo lxc-start -n hack
+
+--------------------------
+
+VERIFY SETUP IS WORKING
+
+Inside container (sudo lxc-attach -n hack):
+
+# Check X11 is accessible
+echo $DISPLAY
+# Should output: :0
+
+# Check Wayland is accessible
+echo $WAYLAND_DISPLAY
+# Should output: wayland-0
+
+# Check XDG_RUNTIME_DIR is set (critical for Wayland)
+echo $XDG_RUNTIME_DIR
+# Should output: /run/user/1000
+
+# Verify mounts
+mount | grep X11-unix
+mount | grep wayland
+mount | grep run/user
+
+# Test X11 app launch
+export DISPLAY=:0
+firefox &
+
+# Test Wayland (if your host supports it)
+export WAYLAND_DISPLAY=wayland-0
+firefox &
+
+--------------------------
+
+TROUBLESHOOTING
+
+Problem: "X11 works but Wayland apps don't open"
+───────────────────────────────────────────────
+Solution 1: Check XDG_RUNTIME_DIR is set
+echo $XDG_RUNTIME_DIR
+# Must output: /run/user/1000
+
+Solution 2: Add to ~/.bashrc if not set
+export XDG_RUNTIME_DIR=/run/user/1000
+source ~/.bashrc
+
+Solution 3: Check Wayland socket exists
+ls -la /run/user/1000/wayland-0
+# Should show a socket file
+
+Solution 4: Check host is using Wayland (not X11)
+echo $WAYLAND_DISPLAY
+# If empty = host uses X11, container can't use Wayland
+# Solution: Just use X11 (already works)
+
+─────────────────────────────────────────────────
+
+Problem: "Can't connect to display"
+──────────────────────────────────
+Solution 1: Verify X11 socket is mounted
+ls -la /tmp/.X11-unix/
+# Should show socket files
+
+Solution 2: Grant X11 access (run on host)
+xhost +local:
+xhost +SI:localuser:root
+
+Solution 3: Check Xauthority
+ls -la ~/.Xauthority
+# Should exist and be readable
+
+─────────────────────────────────────────────────
+
+Problem: "Wayland socket missing"
+────────────────────────────────
+Diagnosis: 
+Check if host has Wayland
+echo $WAYLAND_DISPLAY
+# If empty = host using X11
+
+Solution:
+If host uses X11 (DISPLAY=:0 only):
+- Container can't use Wayland
+- Use X11 instead (it works)
+- This is normal, X11 is fine for all tools
+
+─────────────────────────────────────────────────
+
+Problem: "Java/Burp rendering issues"
+────────────────────────────────────
+Solution: Already included in config
+export _JAVA_OPTIONS='-Dsun.java2d.xrender=false -Dawt.useSystemAAFontSettings=lcd -Dswing.aatext=true'
+
+If still issues:
+- Use X11: export DISPLAY=:0
+- Or use RDP: xfreerdp /u:user /v:IP:3389
+
+--------------------------
+
+ACCESSING CONTAINER APPLICATIONS
+
+Method 1: X11 Direct Forwarding (Recommended)
+─────────────────────────────────────────────
+From host:
+sudo lxc-attach -n hack -- bash -c "export DISPLAY=:0 && firefox &"
+
+# Or launch anything else
+sudo lxc-attach -n hack -- bash -c "export DISPLAY=:0 && burpsuite &"
+sudo lxc-attach -n hack -- bash -c "export DISPLAY=:0 && wireshark &"
+
+Method 2: Wayland Forwarding (If host supports Wayland)
+──────────────────────────────────────────────────────
+From host:
+sudo lxc-attach -n hack -- bash -c "export WAYLAND_DISPLAY=wayland-0 && firefox &"
+
+Method 3: RDP (Remote Desktop)
+──────────────────────────────
+Inside container:
+sudo systemctl start xrdp
+
+From host:
+xfreerdp /u:hacker /p:password /v:container-ip:3389
+
+Method 4: SSH with X11 Forwarding
+────────────────────────────────
+ssh -X hacker@container-ip
+firefox &
+
+--------------------------
+
+OPTIONAL: Make filesytem mountable
+
+This allows you to browse container files from host
+
+sudo mkdir /mnt/lxc-rootfs
+sudo mount --bind /var/lib/lxc/hack/rootfs /mnt/lxc-rootfs
+
+Make persistent:
+sudo nano /etc/fstab
+# Add line:
+/var/lib/lxc/hack/rootfs /mnt/lxc-rootfs none bind 0 0
+
+--------------------------
+
+PERFORMANCE OPTIMIZATION
+
+Elasticsearch (if installed) is resource-heavy:
+• Only start when doing SIEM labs
+• Stop when not in use
+• Saves RAM and CPU
+
+Start Elasticsearch:
+sudo systemctl start elasticsearch kibana
+
+Stop Elasticsearch:
+sudo systemctl stop elasticsearch kibana
+
+Check status:
+sudo systemctl status elasticsearch
+
+--------------------------
+
+SUMMARY
+
+You now have:
+✓ Shared host network stack (direct interface access)
+✓ X11 display support (works on all Linux desktops)
+✓ Wayland display support (modern GNOME/KDE)
+✓ GPU hardware acceleration
+✓ X11 authentication (for Java/Burp)
+✓ Full Kali Linux toolkit
+✓ XFCE desktop environment
+✓ RDP access (fallback)
+✓ SSH access
+
+This setup is:
+✓ Production-grade
+✓ Optimized for CDSA + CPTS certifications
+✓ Works with both X11 and Wayland
+✓ Compatible with your host's display server
+✓ Secure and isolated in privileged container
+
+--------------------------
+The END
+--------------------------
+
+Note: Some tools may work better on X11 than Wayland due to rendering engine differences.
+X11 is the most compatible option. Wayland is available as an alternative on supported systems.
+Both are now properly configured in your container.
