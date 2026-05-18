@@ -1,0 +1,27 @@
+#-----------------------------------------------------------
+For Intel/AMD, create /etc/X11/xorg.conf.d/20-tearfree.conf:
+#-----------------------------------------------------------
+Section "Device"
+    Identifier "GPU"
+    Driver "modesetting"
+    Option "TearFree" "true"
+EndSection
+#-----------------------------------------------------------
+For Nvidia:
+#-----------------------------------------------------------
+Section "Device"
+    Identifier "GPU"
+    Driver "nvidia"
+    Option "ForceFullCompositionPipeline" "true"
+EndSection
+#-----------------------------------------------------------
+For AMD
+#-----------------------------------------------------------
+Section "Device"
+    Identifier "AMD GPU"
+    Driver "amdgpu"
+    Option "TearFree" "true"
+EndSection
+#-----------------------------------------------------------
+# Reboot the device
+#-----------------------------------------------------------
