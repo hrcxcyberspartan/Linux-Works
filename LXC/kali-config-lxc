@@ -35,5 +35,4 @@ lxc.mount.entry = /home/hrc/.Xauthority /home/hx1/.Xauthority none bind,optional
 lxc.mount.entry = /home/hrc/.Xauthority /root/.Xauthority none bind,optional,create=file 0 0
 #Wayland Support
 lxc.mount.entry = /run/user/1000/wayland-0 run/user/1000/wayland-0 none bind,optional,create=file 0 0
-#xauth script 
-lxc.hook.start-host = /etc/lxc/hooks/auth.sh
+ 
