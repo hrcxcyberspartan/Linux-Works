@@ -72,6 +72,9 @@ lxc.mount.entry = /dev/dri dev/dri none bind,optional,create=dir 0 0            
 # Xauthority for authentication (critical for Java/Burp on Wayland)
 lxc.mount.entry = /home/host-user/.Xauthority /home/container-user/.Xauthority none bind,optional,create=file 0 0
 lxc.mount.entry = /home/host-user/.Xauthority /root/.Xauthority none bind,optional,create=file 0 0
+#Wayland Support
+lxc.mount.entry = /run/user/1000/wayland-0 run/user/1000/wayland-0 none bind,optional,create=file 0 0
+
 
 -------------------------
 # Accessing GUI apps and fix font graphical issue
