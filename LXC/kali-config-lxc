@@ -1,0 +1,37 @@
+# Template used to create this container: /usr/share/lxc/templates/lxc-download
+# Parameters passed to the template:
+# For additional config options, please look at lxc.container.conf(5)
+
+# Uncomment the following line to support nesting containers:
+#lxc.include = /usr/share/lxc/config/nesting.conf
+# (Be aware this has security implications)
+
+
+# Distribution configuration
+lxc.include = /usr/share/lxc/config/common.conf
+lxc.arch = linux64
+
+# Container specific configuration
+lxc.apparmor.profile = generated
+lxc.apparmor.allow_nesting = 1
+lxc.rootfs.path = dir:/var/lib/lxc/hack/rootfs
+lxc.uts.name = hack
+
+# Network configuration
+#lxc.net.0.type = veth
+#lxc.net.0.link = lxcbr0
+#lxc.net.0.flags = up
+
+# HRC -Conf
+# Network
+lxc.net.0.type = none
+# GUI access
+lxc.mount.entry = /tmp/.X11-unix tmp/.X11-unix none bind,optional,create=dir 0 0
+lxc.mount.entry = /run/user/1000 run/user/1000 none bind,optional,create=dir 0 0   # for user inside container
+lxc.mount.entry = /run/user/1000 run/user/0 none bind,optional,create=dir 0 0      # for root
+lxc.mount.entry = /dev/dri dev/dri none bind,optional,create=dir 0 0               # GPU
+# Xauthority for authentication (critical for Java/Burp on Wayland)
+lxc.mount.entry = /home/hrc/.Xauthority /home/hx1/.Xauthority none bind,optional,create=file 0 0
+lxc.mount.entry = /home/hrc/.Xauthority /root/.Xauthority none bind,optional,create=file 0 0
+#Wayland Support
+lxc.mount.entry = /run/user/1000/wayland-0 run/user/1000/wayland-0 none bind,optional,create=file 0 0
