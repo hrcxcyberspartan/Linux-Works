@@ -153,8 +153,6 @@ lxc.mount.entry = /home/hx1/.Xauthority /root/.Xauthority none bind,optional,cre
 # ═════════════════════════════════════════════════════════════
 # Wayland Support
 lxc.mount.entry = /run/user/1000/wayland-0 run/user/1000/wayland-0 none bind,optional,create=file 0 0
-# Xauth script 
-lxc.hook.start-host = /etc/lxc/hooks/auth.sh
 # ═════════════════════════════════════════════════════════════
 
 --------------------------
