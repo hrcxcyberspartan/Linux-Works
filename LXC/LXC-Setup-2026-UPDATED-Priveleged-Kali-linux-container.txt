@@ -360,28 +360,6 @@ Check status:
 sudo systemctl status elasticsearch
 
 --------------------------
-
-SUMMARY
-
-You now have:
-✓ Shared host network stack (direct interface access)
-✓ X11 display support (works on all Linux desktops)
-✓ Wayland display support (modern GNOME/KDE)
-✓ GPU hardware acceleration
-✓ X11 authentication (for Java/Burp)
-✓ Full Kali Linux toolkit
-✓ XFCE desktop environment
-✓ RDP access (fallback)
-✓ SSH access
-
-This setup is:
-✓ Production-grade
-✓ Optimized for CDSA + CPTS certifications
-✓ Works with both X11 and Wayland
-✓ Compatible with your host's display server
-✓ Secure and isolated in privileged container
-
---------------------------
 The END
 --------------------------
 
