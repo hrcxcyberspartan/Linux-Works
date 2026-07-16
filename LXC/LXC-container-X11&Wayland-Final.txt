@@ -158,6 +158,8 @@ xhost +local:
 if some apps dont open - try "sudo -E <Appname>"
 ---------------------------------------------
 
+work in progress - wayland issue 
+
 
 
 
