@@ -94,7 +94,7 @@ valid cookie file present.
 
 Inside the container:
   sudo nano /etc/hostname
-  -> replace existing name with your host's hostname (e.g. X-PC)
+  -> replace existing name with your host's hostname 
 
   sudo nano /etc/hosts
   -> change:   127.0.1.1   kali
