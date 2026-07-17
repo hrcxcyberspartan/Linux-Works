@@ -98,10 +98,10 @@ Inside the container:
 
   sudo nano /etc/hosts
   -> change:   127.0.1.1   kali
-     to:       127.0.1.1   X-PC
+     to:       127.0.1.1   <host-hostname>
   -> leave "127.0.0.1  localhost" line untouched
 
-  sudo hostnamectl set-hostname X-PC
+  sudo hostnamectl set-hostname <host-hostname>
   (or just restart the container to apply cleanly)
 
 ---------------------------------------------
