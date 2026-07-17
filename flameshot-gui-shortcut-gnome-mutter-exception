@@ -1,1 +1,2 @@
-
+script --command "flameshot gui" /dev/null # for shortcut
+gsettings set org.gnome.mutter.wayland xwayland-allow-grabs true # to allow muter to allow apps to use x11(xwayland)
