@@ -89,7 +89,7 @@ gsettings set org.gnome.mutter.wayland xwayland-allow-grabs true
 NEW STEP (do this BEFORE step 5) - Match container hostname to host
 
 Why: X11 Xauthority cookies are keyed to the connecting machine's hostname.
-If host is "X-PC" and container is "kali", auth lookups fail even with a
+If host is "<host-hostname>" and container is "kali", auth lookups fail even with a
 valid cookie file present.
 
 Inside the container:
