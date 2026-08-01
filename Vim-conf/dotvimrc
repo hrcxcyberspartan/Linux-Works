@@ -1,0 +1,32 @@
+" set line number
+set number
+set relativenumber
+
+" Status bar
+set laststatus=2
+
+" Set compatibility to Vim only
+set nocompatible          " uncomment this!
+
+" Set line wrap without extending
+set wrap
+
+" Syntax highlight
+syntax on
+
+" colorscheme
+colorscheme desert
+
+" Terminal split below
+set splitbelow
+
+" Set terminal size
+set termwinsize=15x0
+
+" Set Lex 20
+let g:netrw_winsize = 20
+let g:netrw_banner = 0    " hide netrw banner
+let g:netrw_liststyle = 3 " tree view
+
+nnoremap <C-l> :Lex<CR>
+nnoremap <Space>t :terminal<CR>
