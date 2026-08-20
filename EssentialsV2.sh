@@ -1,5 +1,5 @@
 echo "HEXA RANGE CYBER"
-echo "Debian Apps install - only works properly with debian and debian based distros"
+echo "Debian Apps install - only works properly with debian and pure debian based distros"
 echo "Please run in user home directory"
  
 sudo dpkg --add-achitecture i386
