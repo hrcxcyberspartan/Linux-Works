@@ -1,16 +1,16 @@
 sudo mount -t virtiofs mount_tag /path/to/guest/mountpoint
 
-to make it permanent 
-in " /etc/fstab
-mount_tag    /path/to/guest/mountpoint    virtiofs    defaults    0    0
-
 
 Example :
 
 if the shared dir is in home "/home/user/SharedFiles"
 
 mkdir -p ~/SharedFiles
-sudo mount -t virtiofs ~/SharedFiles ~/SharedFiles\
+sudo mount -t virtiofs "~/SharedFiles" ~/SharedFiles
 
 in /etc/fstab
-~/SharedFiles    /home/username/SharedFiles    virtiofs    defaults    0    0
+
+host-name   /home/user/SharedFiles   virtiofs   defaults   0   0
+
+To test 
+sudo mount -a
