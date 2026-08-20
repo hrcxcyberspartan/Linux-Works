@@ -1,4 +1,4 @@
-echo "HC Cybernetics"
+echo "HEXA RANGE CYBER"
 echo "Debian Apps install - only works properly with debian and debian based distros"
 echo "Please run in user home directory"
  
