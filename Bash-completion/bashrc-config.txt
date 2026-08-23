@@ -13,3 +13,12 @@ bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 
 [step 3:  Run "source .bashrc" - This will load the autocompletion configuration from bashrc file ]
+
+
+
+# this is a re-paste of the above commands
+
+bind 'set show-all-if-ambiguous on'
+bind 'TAB:menu-complete'
+bind '"\e[A": history-search-backward'
+bind '"\e[B": history-search-forward'
