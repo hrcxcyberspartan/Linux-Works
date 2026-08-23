@@ -10,7 +10,8 @@ sudo mount -t virtiofs "~/SharedFiles" ~/SharedFiles
 
 in /etc/fstab
 
-host-name   /home/user/SharedFiles   virtiofs   defaults   0   0
+~/Sharedfile   /home/user/SharedFiles   virtiofs   defaults,nofail   0   0
 
+~/targetpath (virt-manager)  /home/user/path  virtiofs  defaults,nofail   0   0
 To test 
 sudo mount -a
