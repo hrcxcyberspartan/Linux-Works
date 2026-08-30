@@ -28,5 +28,9 @@ let g:netrw_winsize = 20
 let g:netrw_banner = 0    " hide netrw banner
 let g:netrw_liststyle = 3 " tree view
 
-nnoremap <C-l> :Lex<CR>
+"nnoremap <C-l> :Lex<CR>
+nnoremap <C-l> :Lexplore<CR>
 nnoremap <Space>t :terminal<CR>
+tnoremap <Esc> <C-\><C-n>
+
+
