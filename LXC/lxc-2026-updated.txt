@@ -193,7 +193,9 @@ fi
 
 export _JAVA_OPTIONS='-Dsun.java2d.xrender=false -Dawt.useSystemAAFontSettings=lcd -Dswing.aatext=true'
 export XAUTHORITY="$HOME/.Xauthority"
-
+---------------------------------------------
+# Add this inside the container to use NAT [lxcbr0] and use GUI in wayland / X11 
+sudo systemctl mask tmp.mount
 ---------------------------------------------
 Notes:
 1 - Privileged container - shutdown/reboot inside it affects the HOST.
