@@ -172,6 +172,16 @@ lxc.mount.entry = /dev/dri dev/dri none bind,optional,create=dir 0 0
 lxc.mount.entry = /home/<host-username>/.xauth-lxc-link home/<container-username>/.Xauthority none bind,optional,create=file 0 0
 lxc.mount.entry = /home/<host-username>/.xauth-lxc-link root/.Xauthority none bind,optional,create=file 0 0
 
+#-----------------------------------------
+# On host
+ls -l /dev/net/tun
+
+#To make VPN tunnel Working inside container
+lxc.cgroup2.devices.allow = c 10:200 rwm
+lxc.mount.entry = /dev/net/tun dev/net/tun none bind,create=file 0 0
+
+#Check and verify inside container
+ls -l /dev/net/tun - verify the mount worked or not
 #------------EOF-------------
 *Press Ctrl + O to Save
 *Press Ctrl + X to Exit
@@ -233,5 +243,5 @@ Notes:
 7 - After host reboot: no manual steps needed. The autostart script
     refreshes the symlink, and the LXC config mount picks it up automatically
     on next container start.
-8 - From Line 197 - GUI access with NAT[lxcbr0] and NAT fails to fetch IP issues - addressed and Fixed
+8 - From Line 202 - GUI access with NAT[lxcbr0] and NAT fails to fetch IP issues - addressed and Fixed
 ---------------------------------------------
