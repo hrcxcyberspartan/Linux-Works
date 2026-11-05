@@ -197,6 +197,30 @@ export XAUTHORITY="$HOME/.Xauthority"
 # Add this inside the container to use NAT [lxcbr0] and use GUI in wayland / X11 
 sudo systemctl mask tmp.mount
 ---------------------------------------------
+# if container fails to get IP
+* Inside the container - create a service which restart the network
+nano /etc/systemd/system/eth0-fix.service
+
+#eth0-fix.service
+[Unit]
+Description=Bring up eth0 and renew DHCP
+After=networking.service
+
+[Service]
+Type=oneshot
+ExecStart=/bin/sh -c 'ip link set dev eth0 up; sleep 2; systemctl restart networking'
+
+[Install]
+WantedBy=multi-user.target
+
+#
+systemctl daemon-reload
+systemctl enable eth0-fix.service
+exit
+
+# Stop and Start the container and wait for 1 minute - the container will definitely get a IP 
+
+---------------------------------------------
 Notes:
 1 - Privileged container - shutdown/reboot inside it affects the HOST.
 2 - Network shared with host - both get the same IP.
@@ -209,4 +233,5 @@ Notes:
 7 - After host reboot: no manual steps needed. The autostart script
     refreshes the symlink, and the LXC config mount picks it up automatically
     on next container start.
+8 - From Line 197 - GUI access with NAT[lxcbr0] and NAT fails to fetch IP issues - addressed and Fixed
 ---------------------------------------------
