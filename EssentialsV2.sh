@@ -64,7 +64,9 @@ flatpak install flathub io.freetubeapp.FreeTube -y
 figlet "Antivirus"
 sudo apt install clamav -y
 sudo apt install clamtk -y
+sudo systemctl stop clamav-freshclam
 sudo freshclam
+sudo systemctl start clamav-freshclam
 
 figlet "Firewall"
 sudo apt install firewalld firewall-config -y
