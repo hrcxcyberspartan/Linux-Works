@@ -53,12 +53,11 @@ sudo apt install wine wine32 wine64
 flatpak install flathub net.lutris.Lutris -y
 flatpak install flathub com.mojang.Minecraft -y
 flatpak install flathub org.gnome.Sudoku -y
-flatpak install flathub com.github.k4zmu2a.spacecadetpinball -y
 flatpak install flathub org.gnome.Chess -y
 sudo apt install aisleriot -y
 
 figlet "Media-Player"
-sudo apt install vlc rhythmbox -y
+sudo apt install vlc rhythmbox lollypop -y
 flatpak install flathub io.freetubeapp.FreeTube -y
 
 figlet "Antivirus"
@@ -69,7 +68,7 @@ sudo freshclam
 sudo systemctl start clamav-freshclam
 
 figlet "Firewall"
-sudo apt install firewalld firewall-config -y
+sudo apt install firewalld firewall-config lollypop -y
 
 figlet "timeshift"
 sudo apt install timeshift -y
