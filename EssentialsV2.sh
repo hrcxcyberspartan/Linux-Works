@@ -67,7 +67,7 @@ sudo apt install clamtk -y
 sudo freshclam
 
 figlet "Firewall"
-sudo apt install ufw gufw -y
+sudo apt install firewalld firewall-config -y
 
 figlet "timeshift"
 sudo apt install timeshift -y
