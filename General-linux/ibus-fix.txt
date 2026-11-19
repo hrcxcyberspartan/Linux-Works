@@ -1,1 +1,1 @@
-
+ibus restart
