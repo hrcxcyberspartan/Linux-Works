@@ -1,0 +1,26 @@
+create or edit file
+~/.config/gtk-3.0/gtk.css
+
+add
+#whiskermenu-window, #whiskermenu-window * {
+    background-color: #000000;
+}
+
+#whiskermenu-window treeview.view:hover,
+#whiskermenu-window treeview.view:selected,
+#whiskermenu-window treeview.view:selected:focus,
+#whiskermenu-window button:hover,
+#whiskermenu-window button:checked {
+    background-color: #2a2a2a;
+}
+
+#whiskermenu-window iconview.view:selected,
+#whiskermenu-window iconview.view:selected:focus,
+#whiskermenu-window iconview.view .cell:selected,
+#whiskermenu-window iconview.view *:selected {
+    background-color: #2a2a2a;
+    color: #ffffff;
+}
+
+then 
+xfce4-panel -r
