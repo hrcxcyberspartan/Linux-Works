@@ -11,3 +11,7 @@ Updated : 2026
 virsh -c qemu:///system net-list --all
 virsh -c qemu:///system net-start default
 virsh -c qemu:///system net-autostart default
+
+echo 'export LIBVIRT_DEFAULT_URI=qemu:///system' >> ~/.bashrc
+source ~/.bashrc
+virsh uri
