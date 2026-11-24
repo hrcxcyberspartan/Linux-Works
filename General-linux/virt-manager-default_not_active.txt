@@ -6,3 +6,8 @@ or
 # virsh net-start default
 # virsh net-autostart default  (if you want it to run on boot)
 #----------------------------------------------
+
+Updated : 2026
+virsh -c qemu:///system net-list --all
+virsh -c qemu:///system net-start default
+virsh -c qemu:///system net-autostart default
